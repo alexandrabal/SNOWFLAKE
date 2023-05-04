@@ -1,0 +1,67 @@
+-- SELECT TRIM('[', '')  
+---from "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"
+
+
+
+---SELECT  REGEXP_REPLACE('email_1','[:]','') FROM "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES";
+
+---WORKS
+---SELECT REPLACE(LIST_OF_EMAILS_DESCRIPTION,'[','') FROM "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES";
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--WORKS!!!!!!!
+---SELECT REGEXP_REPLACE("SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"."email_1",'[>]:','') FROM "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES";
+SELECT REGEXP_REPLACE("SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"."email_1",'[[#$!~*)({}>''<,: |;"]') FROM "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+---will work2
+WITH CTE AS (
+SELECT REGEXP_REPLACE("SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"."email_1",'[[#$!~*)({}>''<,: |;"]') FROM "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES" AS Email_1_ColumnClensed)
+--SELECT * FROM Email_1_ColumnClensed
+INSERT OVERWRITE  INTO "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES" 
+[ ( <"SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"."email_1"> [ , ... ] ) ]
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+UPDATE "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"
+SET "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"."email_1"= SELECT REGEXP_REPLACE("SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"."email_1",'[[#$!~*)({}>''<,: |;"]') FROM "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"{ ALTER | MODIFY } [ ( ]
+                                              [ COLUMN ] <"SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"."email_1"> DROP DEFAULT
+                                            , [ COLUMN ] <col1_name> SET DEFAULT <seq_name>.NEXTVAL
+                                            , [ COLUMN ] <col1_name> { [ SET ] NOT NULL | DROP NOT NULL }
+                                            , [ COLUMN ] <col1_name> [ [ SET DATA ] TYPE ] <type>
+                                            , [ COLUMN ] <col1_name> COMMENT '<string>'
+                                            , [ COLUMN ] <col1_name> UNSET COMMENT
+                                          [ , [ COLUMN ] <col2_name> ... ]
+                                          [ , ... ]
+                                      [ ) ]
+
+                                         
+                                         
+ 
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                        
+alter table "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"
+add email_1_clensed varchar(100);
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------   
+                                                                                            
+---checking that new col is in ----------------------------------------------------------------------------------------------------------------------------------------------------------                                                                                            
+ SELECT * FROM "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES" limit 10                                                                                           
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                                                                                                                                
+INSERT  INTO "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES" (EMAIL_1_CLENSED )    
+        --- VALUES ( { <value> | DEFAULT | NULL } [ , ... ] ) [ , ( ... ) ]  |
+         SELECT REGEXP_REPLACE("SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"."email_1",'[[#$!~*)({}>''<,: |;"]') FROM "SANDBOX_ABALOTA"."TEST_SCHEMA"."Teams23_Data_CS_OT_SALES"
+                                                                                                  
+                                                                                            
+                               
